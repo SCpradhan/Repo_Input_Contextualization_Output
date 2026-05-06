@@ -1,0 +1,75 @@
+orchestration:
+  pipeline:
+    - name: "repository_scan"
+      agent: "scanner"
+      enabled: true
+    - name: "dependency_analysis"
+      agent: "dependency_analyzer"
+      enabled: true
+    - name: "code_structure_analysis"
+      agent: "structure_analyzer"
+      enabled: true
+    - name: "semantic_analysis"
+      agent: "semantic_analyzer"
+      enabled: true
+    - name: "sdlc_artifact_detection"
+      agent: "sdlc_detector"
+      enabled: true
+    - name: "context_synthesis"
+      agent: "context_synthesizer"
+      enabled: true
+
+agents:
+  scanner:
+    description: "Scans repository structure and identifies file types"
+    priority: 1
+    
+  dependency_analyzer:
+    description: "Analyzes project dependencies and relationships"
+    priority: 2
+    
+  structure_analyzer:
+    description: "Analyzes code structure, classes, functions, modules"
+    priority: 3
+    
+  semantic_analyzer:
+    description: "Performs semantic analysis of code and documentation"
+    priority: 4
+    
+  sdlc_detector:
+    description: "Detects SDLC artifacts (requirements, tests, docs)"
+    priority: 5
+    
+  context_synthesizer:
+    description: "Synthesizes all analysis into unified context"
+    priority: 6
+
+ingestion:
+  ignore_patterns:
+    - "node_modules/**"
+    - "venv/**"
+    - ".git/**"
+    - "*.pyc"
+    - "__pycache__/**"
+    - "dist/**"
+    - "build/**"
+    - ".env"
+    - "*.log"
+  
+  max_file_size_mb: 10
+  supported_languages:
+    - python
+    - javascript
+    - typescript
+    - java
+    - cpp
+    - go
+    - rust
+    - ruby
+    - php
+
+contextualization:
+  embedding_model: "text-embedding-3-small"
+  chunk_size: 1000
+  chunk_overlap: 200
+  similarity_threshold: 0.7

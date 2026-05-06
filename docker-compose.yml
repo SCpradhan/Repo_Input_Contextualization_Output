@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  aava-ai:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+      - ./config.yaml:/app/config.yaml
+      - ${REPO_PATH:-./sample_repo}:/app/repo:ro
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AI_PROVIDER=${AI_PROVIDER:-anthropic}
+      - AI_MODEL=${AI_MODEL:-claude-sonnet-4.5}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    command: python api_server.py
+    
+  aava-cli:
+    build: .
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+      - ./config.yaml:/app/config.yaml
+      - ${REPO_PATH:-./sample_repo}:/app/repo:ro
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - AI_PROVIDER=${AI_PROVIDER:-anthropic}
+      - AI_MODEL=${AI_MODEL:-claude-sonnet-4.5}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    command: python main.py --repo-path /app/repo --output /app/output
+    profiles:
+      - cli
